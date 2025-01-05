@@ -16,7 +16,7 @@ export const getData = (
     return _default;
   }
 
-  const row = localStorage.getItem("the_book" + key);
+  const row = localStorage.getItem("the_book:" + key);
   if (row) {
     const data = JSON.parse(row);
     return data.data;
