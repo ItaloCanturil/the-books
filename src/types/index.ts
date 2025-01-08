@@ -2,7 +2,7 @@ export type BookMetaData = {
   id: number;
   name: string;
   author_id: number;
-  pages?: string
+  pages?: number
 }
 
 export type AuthorMetaData = {
