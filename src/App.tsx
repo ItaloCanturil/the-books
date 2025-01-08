@@ -1,49 +1,33 @@
-import { Box, Flex, Grid, Text, TextField } from '@radix-ui/themes'
-import { CreateAuthorDialog } from './components/create-author-dialog'
-import { CreateBookDialog } from './components/create-book-dialog'
-import { BookCard } from './components/Cards/book-card'
-import { UserTable } from './components/ui/user-table'
-// import { authors, books } from './mock/data'
+import { Flex, Text } from '@radix-ui/themes'
 import { LibraryContextProvider, useLibraryContext } from 'contexts/LibraryContext'
+import { BookContent } from 'components/book-content'
+import { AuthorContent } from 'components/author-content'
 
-function App() {
-  const { authorModel, bookModel } = useLibraryContext();
-  const books = bookModel.getAllBooks();
-  console.log("🚀 ~ App ~ books:", books)
-  const authors = authorModel.getAllAuthors();
+function AppContent() {
+  const { isLoading } = useLibraryContext();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <>
-      <LibraryContextProvider>
-        <Flex direction="column" mx="auto" width="64em">
-          <Text size="6" weight="bold">Biblioteca</Text>
+    <Flex direction="column" mx="auto" width="64em">
+      <Text size="6" weight="bold">Biblioteca</Text>
 
-          <Flex my="2" justify="between" gap="2">
-            <Flex gap="2">
-              <TextField.Root radius='large'></TextField.Root>
+      <Flex mt="2" justify="between">
+        <BookContent/>
+        <AuthorContent/>
+      </Flex>
+    </Flex>
+  );
+}
 
-              <CreateAuthorDialog/>
-            </Flex>
-            <Flex gap="2">
-              <TextField.Root radius='large'></TextField.Root>
-
-              <CreateBookDialog/>
-            </Flex>
-          </Flex>
-
-          <Grid columns="3" gap="2" mt="2">
-            {books.map((book) => (
-              <BookCard key={book.id} data={book}/>
-            ))}
-          </Grid>
-
-          <Box mt="2">
-            <UserTable data={authors} ></UserTable>
-          </Box>
-        </Flex>
-      </LibraryContextProvider>
-    </>
-  )
+function App() {
+  return (
+    <LibraryContextProvider>
+      <AppContent />
+    </LibraryContextProvider>
+  );
 }
 
 export default App
