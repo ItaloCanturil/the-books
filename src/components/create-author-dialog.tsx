@@ -12,14 +12,14 @@ const authorDialogSchema = z.object({
 type AuthorDialogSchema = z.infer<typeof authorDialogSchema>
 
 export function CreateAuthorDialog() {
-  const { authorModel } = useLibraryContext();
+  const { addAuthor } = useLibraryContext();
 
   const { register, handleSubmit, formState: { errors } } = useForm<AuthorDialogSchema>({
     resolver: zodResolver(authorDialogSchema)
   })
   
   const handleAddAuthor: SubmitHandler<AuthorDialogSchema> = (data) => {
-    authorModel.addAuthor(data);
+    addAuthor(data);
   }
 
   return (
