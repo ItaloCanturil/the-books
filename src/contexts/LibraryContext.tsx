@@ -1,30 +1,92 @@
-import AuthorModel from "model/AuthorModel";
-import BookModel from "model/BookModel";
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { AuthorMetaData, BookMetaData } from "types";
+import { getData, setData } from "utils/storeLocal";
 
 type LibraryContextProps = {
   children: ReactNode
 }
 
 type LibraryContextType = {
-  authorModel: AuthorModel;
-  bookModel: BookModel;
+  authorModel: AuthorMetaData[];
+  bookModel: BookMetaData[];
+  addBook: (book: Omit<BookMetaData, 'id'>) => void;
+  addAuthor: (author: Omit<AuthorMetaData, 'id'>) => void;
+  getAllBooks: () => void;
+  getAllAuthors: () => void;
+  deleteAuthorById: (author_id: number) => void;
+  isLoading: boolean;
 }
 
 const initialValue = {
-  authorModel: new AuthorModel(),
-  bookModel: new BookModel(),
+  authorModel: [],
+  bookModel: [],
+  addBook: () => {} ,
+  addAuthor: () => {},
+  getAllAuthors: () => {},
+  getAllBooks: () => {},
+  deleteAuthorById: () => {},
+  isLoading: true,
 }
 
 export const LibraryContext = createContext<LibraryContextType>(initialValue);
 
 export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
-  const [authorModel] = useState(() => new AuthorModel());
-  const [bookModel] = useState(() => new BookModel());
+  const [authorModel, setAuthors] = useState<AuthorMetaData[]>(() => initialValue.authorModel);
+  const [bookModel, setBooks] = useState<BookMetaData[]>(() => initialValue.bookModel);
+  const [isLoading, setIsLoading] = useState(true);
+  // console.log("🚀 ~ LibraryContextProvider ~ authorModel:", authorModel)
 
-  const contextValue = useMemo(() => ({ authorModel, bookModel}), [authorModel, bookModel])
+  useEffect(() => {
+    const storedAuthors = getData("author", []);
+    const storedBooks = getData("book", []);
+    setAuthors(storedAuthors);
+    setBooks(storedBooks);
+    setIsLoading(false);
+  }, [])
 
-  return <LibraryContext.Provider value={contextValue}>{ children }</LibraryContext.Provider>
+  const addBook = (book: Omit<BookMetaData, 'id'>) => {
+    const nextId = bookModel.length ? bookModel[bookModel.length - 1].id + 1 : 1;
+    const reformedBook = { id: nextId, ...book };
+    const updatedBooks = [...bookModel, reformedBook];
+
+    setBooks(updatedBooks);
+    setData("book", updatedBooks);
+  }
+
+  const addAuthor = (author: Omit<AuthorMetaData, 'id'>) => {
+    const nextId = authorModel.length ? authorModel[authorModel.length - 1].id + 1 : 1;
+    const reformedAuthor = { id: nextId, ...author };
+    const updatedAuthors = [...authorModel, reformedAuthor];
+    console.log("🚀 ~ addAuthor ~ updatedAuthors:", updatedAuthors)
+
+    setAuthors(updatedAuthors);
+    setData("author", updatedAuthors);
+  }
+
+  const getAllAuthors = () => {
+    const authors = getData('author', []);
+    console.log("🚀 ~ getAllAuthors ~ authors:", authors)
+
+    setAuthors(authors)
+  }
+
+  const getAllBooks = () => {
+    const books = getData('book', []);
+
+    setBooks(books)
+  }
+
+  const deleteAuthorById = (author_id: number) => {
+    const filtered = authorModel.filter(a => a.id !== author_id);
+    
+    setAuthors(filtered);
+    setData("author", filtered);
+  }
+
+
+  // const contextValue = useMemo(() => ({ authorModel, bookModel}), [authorModel, bookModel])
+
+  return <LibraryContext.Provider value={{ authorModel, bookModel, addAuthor, addBook, getAllAuthors, getAllBooks, isLoading, deleteAuthorById }}>{ children }</LibraryContext.Provider>
 }
 
 export const useLibraryContext = (): LibraryContextType => {
