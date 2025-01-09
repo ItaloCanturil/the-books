@@ -1,6 +1,8 @@
 import { Avatar, Box, Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { useLibraryContext } from "contexts/LibraryContext";
 import { AuthorMetaData } from "types";
+import { RemoveAlertDialog } from "../remove-alert-dialog";
+import { useToast } from "contexts/ToastContext";
 
 type AuthorDialogProps = {
   data: AuthorMetaData
@@ -8,9 +10,12 @@ type AuthorDialogProps = {
 
 export function AuthorDialog ({ data }: AuthorDialogProps ) {
   const { deleteAuthorById } = useLibraryContext();
+  const { showToast } = useToast();
 
   const handleDelete = () => {
     deleteAuthorById(data.id)
+
+    showToast("Autor excluido", "failure")
   }
 
   return (
@@ -39,7 +44,9 @@ export function AuthorDialog ({ data }: AuthorDialogProps ) {
 
           <Flex align="center" gap="6">
             <Button variant="soft">Editar</Button>
-            <Button color="red" variant="soft" onClick={handleDelete}>Excluir</Button>
+            {/* <Button color="red" variant="soft" onClick={handleDelete}>Excluir</Button> */}
+
+            <RemoveAlertDialog label="autor" _action={handleDelete}></RemoveAlertDialog>
           </Flex>
         </Flex>
       </Dialog.Content>

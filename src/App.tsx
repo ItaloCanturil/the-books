@@ -2,6 +2,7 @@ import { Flex, Text } from '@radix-ui/themes'
 import { LibraryContextProvider, useLibraryContext } from 'contexts/LibraryContext'
 import { BookContent } from 'components/book-content'
 import { AuthorContent } from 'components/author-content'
+import { ToastProvider } from 'contexts/ToastContext';
 
 function AppContent() {
   const { isLoading } = useLibraryContext();
@@ -25,7 +26,9 @@ function AppContent() {
 function App() {
   return (
     <LibraryContextProvider>
-      <AppContent />
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
     </LibraryContextProvider>
   );
 }
