@@ -2,6 +2,7 @@ import { Table } from "@radix-ui/themes"
 import Wrapper from "components/ui/wrapper"
 import { useLibraryContext } from "contexts/LibraryContext"
 import { BookMetaData } from "types"
+import { BookDialog } from "./book-dialog"
 
 interface BookTableProps {
   data: BookMetaData[]
@@ -30,10 +31,15 @@ export function BookTable({ data }: BookTableProps) {
         </Table.Header>
         <Table.Body>
           {data.map((item) => (
-            <Table.Row>
+            <Table.Row key={item.id}>
               <Table.Cell>{item.id}</Table.Cell>
-              <Table.Cell>{item.name}</Table.Cell>
-              <Table.Cell>{handleAuthorId(item.author_id) }</Table.Cell>
+              <Table.Cell>
+                <BookDialog data={item}></BookDialog>
+              </Table.Cell>
+              <Table.Cell>{item.author ?
+                item.author
+              :  handleAuthorId(item.author_id)}
+              </Table.Cell>
               <Table.Cell>{item.pages}</Table.Cell>
             </Table.Row>
           ))}
