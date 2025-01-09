@@ -36,9 +36,9 @@ export function CreateBookDialog() {
   });
 
   const handleAddBook: SubmitHandler<BookDialogSchema> = (data) => {
-    console.log("🚀 ~ CreateBookDialog ~ data:", data)
     const author = authorModel.find((a) => a.name === data.author);
     const authorId = author ? author.id : - 1;
+    data.author = author ? author.name : data.author;
 
     addBook({ ...data, author_id: authorId });
   };
