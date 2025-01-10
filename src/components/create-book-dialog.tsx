@@ -7,12 +7,15 @@ import {
   Select,
   Text,
   TextField,
+  Tooltip,
 } from "@radix-ui/themes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useLibraryContext } from "contexts/LibraryContext";
 import { useState } from "react";
+import { useToast } from "contexts/ToastContext";
+import { CloseIcon } from "./ui/Icons/icons";
 
 const bookDialogSchema = z.object({
   name: z.string().min(1, "Nome obrigatório"),
@@ -25,6 +28,7 @@ type BookDialogSchema = z.infer<typeof bookDialogSchema>;
 export function CreateBookDialog() {
   const [hasAuthor, setHasAuthor] = useState<boolean>();
   const { addBook, authorModel } = useLibraryContext();
+  const { showToast } = useToast();
 
   const {
     register,
@@ -41,6 +45,7 @@ export function CreateBookDialog() {
     data.author = author ? author.name : data.author;
 
     addBook({ ...data, author_id: authorId });
+    showToast("Livro adicionado", "success")
   };
 
   const handleHasAuthors = (e: any) => {
@@ -51,9 +56,11 @@ export function CreateBookDialog() {
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
-        <Button>Adicionar Livro</Button>
-      </Dialog.Trigger>
+      <Tooltip content="Adicionar livro">
+        <Dialog.Trigger>
+            <Button radius="full">+</Button>
+        </Dialog.Trigger>
+      </Tooltip>
 
       <Dialog.Content asChild>
         <form onSubmit={handleSubmit(handleAddBook)}>
@@ -62,7 +69,7 @@ export function CreateBookDialog() {
 
             <Dialog.Close>
               <IconButton size="1" variant="soft">
-                X
+                <CloseIcon></CloseIcon>
               </IconButton>
             </Dialog.Close>
           </Flex>

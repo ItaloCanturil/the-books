@@ -1,8 +1,10 @@
-import { Button, Dialog, Flex, IconButton, Text, TextField } from "@radix-ui/themes"
+import { Button, Dialog, Flex, IconButton, Text, TextField, Tooltip } from "@radix-ui/themes"
 import { useLibraryContext } from "contexts/LibraryContext"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
+import { CloseIcon } from "./ui/Icons/icons"
+import { useToast } from "contexts/ToastContext"
 
 const authorDialogSchema = z.object({
   name: z.string().min(1, "Nome obrigatório"),
@@ -13,6 +15,7 @@ type AuthorDialogSchema = z.infer<typeof authorDialogSchema>
 
 export function CreateAuthorDialog() {
   const { addAuthor } = useLibraryContext();
+  const { showToast } = useToast();
 
   const { register, handleSubmit, formState: { errors } } = useForm<AuthorDialogSchema>({
     resolver: zodResolver(authorDialogSchema)
@@ -20,13 +23,17 @@ export function CreateAuthorDialog() {
   
   const handleAddAuthor: SubmitHandler<AuthorDialogSchema> = (data) => {
     addAuthor(data);
+
+    showToast("Autor adicionado", "success")
   }
 
   return (
     <Dialog.Root>
-      <Dialog.Trigger>
-        <Button>Adicionar Autor</Button>
-      </Dialog.Trigger>
+      <Tooltip content="Adicionar autor">
+        <Dialog.Trigger>
+            <Button radius="full">+</Button>
+        </Dialog.Trigger>
+      </Tooltip>
       
       <Dialog.Content asChild>
         <form onSubmit={handleSubmit(handleAddAuthor)}>
@@ -35,7 +42,7 @@ export function CreateAuthorDialog() {
 
             <Dialog.Close>
               <IconButton size="1" variant="soft">
-                X
+                <CloseIcon></CloseIcon>
               </IconButton>
             </Dialog.Close>
           </Flex>
