@@ -21,6 +21,8 @@ type LibraryContextType = {
   getAllAuthors: () => void;
   deleteAuthorById: (author_id: number) => void;
   deleteBookById: (book_id: number) => void;
+  filterBookByName: (name: string) => void;
+  filterAuthorByName: (name: string) => void;
   isLoading: boolean;
 };
 
@@ -33,6 +35,8 @@ const initialValue = {
   getAllBooks: () => {},
   deleteAuthorById: () => {},
   deleteBookById: () => {},
+  filterBookByName: () => {},
+  filterAuthorByName: () => {},
   isLoading: true,
 };
 
@@ -72,7 +76,6 @@ export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
       : 1;
     const reformedAuthor = { id: nextId, ...author };
     const updatedAuthors = [...authorModel, reformedAuthor];
-    console.log("🚀 ~ addAuthor ~ updatedAuthors:", updatedAuthors);
 
     setAuthors(updatedAuthors);
     setData("author", updatedAuthors);
@@ -104,6 +107,42 @@ export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
     setData("book", filtered);
   };
 
+  const filterBookByName = (name: string) => {
+    if (!name) {
+      getAllBooks();
+      return;
+    }
+
+    const uppName = name.toUpperCase();
+    const filtered = bookModel.filter((book) => {
+      if(book.name.toUpperCase().includes(uppName)) {
+        return book;
+      }
+
+      return;
+    })
+
+    setBooks(filtered)
+  };
+
+  const filterAuthorByName = (name: string) => {
+    if (!name) {
+      getAllAuthors();
+      return;
+    }
+
+    const uppName = name.toUpperCase();
+    const filtered = authorModel.filter((author) => {
+      if(author.name.toUpperCase().includes(uppName)) {
+        return author;
+      }
+
+      return;
+    })
+
+    setAuthors(filtered)
+  }
+
 
   return (
     <LibraryContext.Provider
@@ -117,6 +156,8 @@ export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
         isLoading,
         deleteAuthorById,
         deleteBookById,
+        filterBookByName,
+        filterAuthorByName
       }}
     >
       {children}
