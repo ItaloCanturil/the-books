@@ -54,7 +54,7 @@ export const ToastProvider = ({ children }: ToastContextProps) => {
 
   const removeAllToasts = () => setToasts([]);
 
-  const removeToast= (id) => setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id))
+  const removeToast= (id: number) => setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id))
 
   return (
     <ToastContext.Provider value={{ toasts, showToast, removeAllToasts, position, setPosition, removeToast }}>
