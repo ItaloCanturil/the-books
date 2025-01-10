@@ -23,6 +23,8 @@ type LibraryContextType = {
   deleteBookById: (book_id: number) => void;
   filterBookByName: (name: string) => void;
   filterAuthorByName: (name: string) => void;
+  searchBookByAuthorId: (author_id: number) => void;
+  searchAuthorByAuthorId: (author_id: number) => void;
   isLoading: boolean;
 };
 
@@ -37,6 +39,8 @@ const initialValue = {
   deleteBookById: () => {},
   filterBookByName: () => {},
   filterAuthorByName: () => {},
+  searchBookByAuthorId: () => {},
+  searchAuthorByAuthorId: () => {},
   isLoading: true,
 };
 
@@ -153,6 +157,17 @@ export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
     setAuthors(filtered)
   }
 
+  const searchBookByAuthorId = (author_id: number): BookMetaData[] => {
+    const filtered = bookModel.filter((book) => book.author_id === author_id);
+
+    return filtered;
+  };
+
+  const searchAuthorByAuthorId = (author_id: number) => {
+    const filtered = authorModel.find((author) => author.id === author_id);
+
+    return filtered;
+  };
 
   return (
     <LibraryContext.Provider
@@ -167,7 +182,9 @@ export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
         deleteAuthorById,
         deleteBookById,
         filterBookByName,
-        filterAuthorByName
+        filterAuthorByName,
+        searchBookByAuthorId,
+        searchAuthorByAuthorId
       }}
     >
       {children}
