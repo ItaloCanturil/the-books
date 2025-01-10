@@ -9,7 +9,7 @@ const ToastList = () => {
   
   const listRef = useRef(null);
 
-  const handleScrolling = (el) => {
+  const handleScrolling = (el: HTMLElement | null) => {
     const isTopPosition = [Position["top-left"], Position["top-right"]].includes(position);
 
     if (isTopPosition) {
