@@ -11,7 +11,6 @@ interface BookTableProps {
 export function BookTable({ data }: BookTableProps) {
   const { authorModel } = useLibraryContext();
   
-  
   const handleAuthorId = (author_id: number) => {
     const author = authorModel.find((author) => author.id === author_id);
 
@@ -19,7 +18,7 @@ export function BookTable({ data }: BookTableProps) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper maxHeight="300px" height="300px">
       <Table.Root 
         size={{
           initial: "1",

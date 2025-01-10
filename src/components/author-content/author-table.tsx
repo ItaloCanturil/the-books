@@ -13,8 +13,15 @@ export function AuthorTable({ data }: AuthorTableProps ) {
   const { bookModel} = useLibraryContext();
 
   return (
-    <Wrapper>
-      <Table.Root>
+    <Wrapper maxHeight="300px" height="300px">
+      <Table.Root
+        size={{
+          initial: "1",
+          md: "2",
+          lg: "3"
+        }}
+        layout="auto"
+      >
         <Table.Header>
           <Table.Row >
             <Table.ColumnHeaderCell justify="center">ID</Table.ColumnHeaderCell>
