@@ -1,25 +1,33 @@
-import { Avatar, Box, Button, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
+import {Button, Container, DataList, Dialog, Flex, IconButton, Text } from "@radix-ui/themes";
 import { useLibraryContext } from "contexts/LibraryContext";
-import { AuthorMetaData } from "types";
+import { AuthorMetaData, BookMetaData } from "types";
 import { RemoveAlertDialog } from "../remove-alert-dialog";
 import { useToast } from "contexts/ToastContext";
+import { BookDialog } from "components/book-content/book-dialog";
+import ListStyle from "components/ui/list-style";
+import { CloseIcon } from "components/ui/Icons/icons";
+import { useState } from "react";
 
 type AuthorDialogProps = {
   data: AuthorMetaData
 }
 
 export function AuthorDialog ({ data }: AuthorDialogProps ) {
-  const { deleteAuthorById } = useLibraryContext();
+  const { deleteAuthorById, searchBookByAuthorId } = useLibraryContext();
   const { showToast } = useToast();
+  const [open, setOpen] = useState(false);
+
+  const booksAuthor= searchBookByAuthorId(data.id) as unknown as BookMetaData[];
 
   const handleDelete = () => {
     deleteAuthorById(data.id)
 
     showToast("Autor excluido", "failure")
+    setOpen(false);
   }
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
         <Button variant="ghost">{ data.name }</Button>
       </Dialog.Trigger>
@@ -30,24 +38,42 @@ export function AuthorDialog ({ data }: AuthorDialogProps ) {
 
           <Dialog.Close>
             <IconButton size="1" variant="soft">
-              X
+              <CloseIcon/>
             </IconButton>
           </Dialog.Close>
         </Flex>
 
-        <Flex direction="column" gap="3" align="center">
-          <Avatar size="4" fallback="I"/>
-          <Box>
-            <Text as="div" size="1">Nome: {data.name}</Text>
-            <Text as="div" size="1">Email: { data.email }</Text>
-          </Box>
+        <Container my="5">
+          <DataList.Root>
+            <DataList.Item>
+              <DataList.Label>Nome:</DataList.Label>
+              <DataList.Value>
+                <Text as="div">{ data.name }</Text>
+              </DataList.Value>
+            </DataList.Item>
+            <DataList.Item>
+              <DataList.Label>Email:</DataList.Label>
+              <DataList.Value>
+                <Text as="div">{ data.email }</Text>
+              </DataList.Value>
+            </DataList.Item>
+            <DataList.Item>
+              <DataList.Label>Livros:</DataList.Label>
+              <DataList.Value>
+                <ListStyle>
+                  {booksAuthor.map((book) => (
+                    <li>
+                      <BookDialog data={book}></BookDialog>
+                    </li>
+                  ))}
+                </ListStyle>
+              </DataList.Value>
+            </DataList.Item>
+          </DataList.Root>
+        </Container>
 
-          <Flex align="center" gap="6">
-            <Button variant="soft">Editar</Button>
-            {/* <Button color="red" variant="soft" onClick={handleDelete}>Excluir</Button> */}
-
-            <RemoveAlertDialog label="autor" _action={handleDelete}></RemoveAlertDialog>
-          </Flex>
+        <Flex justify="center">
+          <RemoveAlertDialog label="autor" _action={handleDelete}/>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
