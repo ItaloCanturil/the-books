@@ -20,27 +20,34 @@ export function BookTable({ data }: BookTableProps) {
 
   return (
     <Wrapper>
-      <Table.Root>
+      <Table.Root 
+        size={{
+          initial: "1",
+          md: "2",
+          lg: "3"
+        }}
+        layout="auto"
+      >
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>ID</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Nome</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Autor</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Páginas</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell justify="center">ID</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell justify="center">Nome</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell justify="center">Autor</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell justify="center">Páginas</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {data.map((item) => (
             <Table.Row key={item.id}>
-              <Table.Cell>{item.id}</Table.Cell>
-              <Table.Cell>
+              <Table.Cell justify="center">{item.id}</Table.Cell>
+              <Table.Cell justify="center">
                 <BookDialog data={item}></BookDialog>
               </Table.Cell>
-              <Table.Cell>{item.author ?
+              <Table.Cell justify="center">{item.author ?
                 item.author
               :  handleAuthorId(item.author_id)}
               </Table.Cell>
-              <Table.Cell>{item.pages}</Table.Cell>
+              <Table.Cell justify="center">{item.pages}</Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
