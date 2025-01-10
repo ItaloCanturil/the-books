@@ -98,6 +98,16 @@ export const LibraryContextProvider = ({ children }: LibraryContextProps) => {
 
     setAuthors(filtered);
     setData("author", filtered);
+
+    const updatedBooks = bookModel.map((book) => {
+      if(book.author_id === author_id) {
+        return { ...book, author_id: -1};
+      }
+      return book;
+    });
+
+    setBooks(updatedBooks);
+    setData("book", updatedBooks);
   };
 
   const deleteBookById = (book_id: number) => {
