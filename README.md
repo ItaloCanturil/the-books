@@ -1,7 +1,7 @@
 # Biblioteca Interativa
 
 ## 📜 Descrição
-Este projeto é um CRUD de uma biblioteca, focado no front-end, com manipulação de dados através do localStorage e modal/dialog.
+Este projeto é um CRUD de uma biblioteca, focado no front-end, com manipulação de dados através do localStorage e modal/dialog. [Preview](https://the-books-lemon.vercel.app/)
 
 ## Funcionalidades
 - Criação de Autor/Livro
