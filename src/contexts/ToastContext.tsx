@@ -47,9 +47,9 @@ export const ToastProvider = ({ children }: ToastContextProps) => {
     setToasts((prevToasts) => [...prevToasts, toast]);
     console.log("🚀 ~ showToast ~ message:", message)
 
-    // setTimeout(() => {
-    //   setToasts((prevToasts) => prevToasts.filter((t) => t.id !== toast.id));
-    // }, 3000);
+    setTimeout(() => {
+      setToasts((prevToasts) => prevToasts.filter((t) => t.id !== toast.id));
+    }, 3000);
   };
 
   const removeAllToasts = () => setToasts([]);
