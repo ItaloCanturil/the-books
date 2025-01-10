@@ -4,9 +4,12 @@ import { BookContent } from 'components/book-content'
 import { AuthorContent } from 'components/author-content'
 import { ToastProvider } from 'contexts/ToastContext';
 import "./index.css"
+import { SummaryCard } from 'components/ui/summary-card';
 
 function AppContent() {
-  const { isLoading } = useLibraryContext();
+  const { isLoading, authorModel, bookModel } = useLibraryContext();
+  const authorQt = authorModel.length;
+  const bookQt = bookModel.length;
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -14,10 +17,20 @@ function AppContent() {
 
   return (
     <Flex direction="column" mx="auto" maxWidth="64em" height="100%" p="4">
-      <Flex direction="column" mx="auto" align="center">
-        <Text size="6" weight="bold">Biblioteca interativa</Text>
-        <Text size="2" weight="light">Porque cada livro conta uma história, e cada autor deixa um legado.</Text>
-      </Flex>
+      <Section>
+        <Flex direction="column" mx="auto" align="center">
+          <Text size="6" weight="bold">Biblioteca interativa</Text>
+          <Text size="2" weight="light">Porque cada livro conta uma história, e cada autor deixa um legado.</Text>
+        </Flex>
+        <Box mt="5">
+          <SummaryCard 
+              authors={authorQt}
+              books={bookQt}
+            />
+        </Box>
+      </Section>
+
+
 
       <Grid
         columns={{
@@ -28,7 +41,6 @@ function AppContent() {
           initial: '2',
           md: '1'
         }}
-        mt="9"
         gap="2"
         gapY={{
           initial: '9'
