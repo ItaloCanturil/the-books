@@ -1,50 +1,21 @@
-# React + TypeScript + Vite
+# Biblioteca Interativa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📜 Descrição
+Este projeto é um CRUD de uma biblioteca, focado no front-end, com manipulação de dados através do localStorage e modal/dialog.
 
-Currently, two official plugins are available:
+## Funcionalidades
+- Criação de Autor/Livro
+- Exclusão de Autor/Livro
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Tecnologias Utilizadas
 
-## Expanding the ESLint configuration
+- Vite
+- React
+- TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🏁 Como Rodar o Projeto
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Troubles: 
+- OPTIONAL HANDLIGN doesn't work without vite-tsconfig-paths plugin
+- Reatividade com context: inicialmente estava centralizando a manipulação dos dados dentro de classes porém ao colocar dentro do context perdia a reatividade, logo fiz a alteração para manipular dentro do próprio context e deu certo.
+-------
