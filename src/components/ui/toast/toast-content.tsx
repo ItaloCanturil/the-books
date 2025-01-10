@@ -19,7 +19,7 @@ const ToastContent = ({ message, type, onClose }: ToastProps) => {
     warning: <WarningIcon />
   };
 
-  const toastIcon = iconMap[type] || null;
+  const toastIcon = iconMap[type as keyof typeof iconMap] || null;
 
   return (
     <div className={`toast toast--${type}`} role="alert">
